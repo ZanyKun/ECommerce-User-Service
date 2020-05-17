@@ -37,7 +37,7 @@ public class UserController {
 				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build());
 	}
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(value = "/{username}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<User> getUser(@PathVariable String username){
 		return ResponseEntity.of(service.getUserByUsername(username));
 	}
