@@ -42,7 +42,7 @@ public class UserController {
 		return ResponseEntity.of(service.getUserByUsername(username));
 	}
 	
-	@GetMapping(value = "/search?offset= {offset}&&limit= {limit}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<List<User>> getUsers(@RequestParam(name = "offset", defaultValue = "0") int offset,
 											   @RequestParam(name="limit", defaultValue = "10") int limit){
 		return service.getUsers(offset, limit).map(users -> ResponseEntity.status(HttpStatus.OK).body(users.getContent()))

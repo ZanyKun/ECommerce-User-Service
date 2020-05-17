@@ -25,26 +25,23 @@ public class User {
 	String username;
 	String password;
 	
-	String firstName;
-	String lastName;
+	String fullname;
 	Date dob;
 	
+	@ElementCollection
 	List<Long> phoneNumber;
-	@Embedded
-	Address primaryAddress;
-	@Embedded
-	Card primaryPayment;
 	
 	@Embedded
 	@ElementCollection
 	@OrderColumn
-	List<Address> secondaryAddresses;
+	List<Address> userAddresses;
 	
 	@Embedded
 	@ElementCollection
 	@OrderColumn
-	List<Card> secondaryCards;
+	List<Card> userCards;
 	
+	@ElementCollection
 	List<Role> roles;
 	
 	public enum Role{

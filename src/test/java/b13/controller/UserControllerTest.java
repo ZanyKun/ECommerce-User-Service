@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +34,7 @@ public class UserControllerTest {
 	@MockBean	UserService service;
 	@Mock		HttpRequest	request;
 	@Mock		User user;
+	@Mock		Page<User> userList;
 	
 	//Creating a user with no information passed
 	@Test
@@ -62,6 +64,20 @@ public class UserControllerTest {
 	void getUserByUsernameExist() throws Exception {
 		when(service.getUserByUsername(Mockito.anyString())).thenReturn(Optional.of(new User()));
 		mvc.perform(get("/users/test").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+	
+	//Attempting to get a page of users but nothing is returned
+	@Test
+	void getUsersNoneFound() throws Exception{
+		when(service.getUsers(Mockito.anyInt(), Mockito.anyInt())).thenReturn(Optional.empty());
+		mvc.perform(get("/users/search?offset=0&&limit=20").accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+	
+	//Attempting to get a page of users and get one returned
+	@Test
+	void getUsersPageFound() throws Exception{
+		when(service.getUsers(Mockito.anyInt(), Mockito.anyInt())).thenReturn(Optional.ofNullable(userList));
+		mvc.perform(get("/users/?offset=0&&limit=20").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 	
 	//Deleting a user that does not exist
