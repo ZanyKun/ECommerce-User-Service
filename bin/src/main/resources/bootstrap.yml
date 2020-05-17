@@ -2,14 +2,6 @@ spring:
   application:
     name: 
       user-service
-      
-eureka:  client:    register-with-eureka: true
-    fetch-registry: true
-    
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-          - "*"
-      base-path: /user-management
+#  cloud:
+#    config:
+#      uri: http://${config-host:3.87.29.41}:8888

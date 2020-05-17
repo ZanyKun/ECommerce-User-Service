@@ -2,6 +2,8 @@ package b13.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,10 +32,9 @@ public class UserController {
 	UserService service;
 	
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<?> createUser(@RequestBody User user, HttpRequest request){
-		return service.createUser(user).map(u -> ResponseEntity.status(HttpStatus.CREATED)
-				.header("Location", request.getURI() + "/" + u.getUsername())
-				.build())
+	public ResponseEntity<?> createUser(@RequestBody User user, HttpServletRequest request){
+		return service.createUser(user)
+				.map(u -> ResponseEntity.status(HttpStatus.CREATED).header("Location", request.getRequestURI() + "/" + u.getUsername()).build())
 				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build());
 	}
 	

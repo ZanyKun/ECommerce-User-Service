@@ -1,24 +1,29 @@
 package b13.service;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import b13.dao.Pager;
 import b13.dao.UserRepository;
 import b13.dao.util.Pagination;
 import b13.dto.User;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService{
-
+	static Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
+	
 	UserRepository userRep;
-	Pagination pagination;
 	
 	@Override
 	public Optional<User> createUser(User user) {
-		return Optional.of(userRep.save(user));
+		Optional<User> retVal = Optional.of(userRep.save(user));
+		logger.severe("umm...");
+		return retVal;
 	}
 
 	@Override
@@ -38,8 +43,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Optional<Page<User>> getUsers(int offset, int limit) {
-		Pageable userPage = Pagination.of(offset, limit);
-		return Optional.ofNullable(userRep.findAll(userPage));
+		return Optional.ofNullable(userRep.findAll(Pager.of(offset, limit)));
 	}
 
 	@Override
